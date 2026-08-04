@@ -1,0 +1,32 @@
+{
+  "System": {
+    "Route": [
+      {
+        "#class": "System.Route",
+        "name": "www.workandtravel",
+        "path": "info",
+        "controller": "Package:RaXon83:www.workandtravel.world:Controller:Cli:main",
+        "priority": 1001,
+        "request": {
+          "language": "en"
+        },
+        "method": [
+          "CLI"
+        ]
+      },
+      {
+        "#class": "System.Route",
+        "name": "www.workandtravel",
+        "path": "\/",
+        "controller": "Package:RaXon83:www.workandtravel.world:Controller:Www:main",
+        "priority": 1002,
+        "request": {
+          "language": "en"
+        },
+        "method": [
+          "GET"
+        ]
+      }
+    ]
+  }
+}

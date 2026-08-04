@@ -1,0 +1,291 @@
+{{$frontend.host = options('frontend.host')}}{{$backend.host = options('backend.host')}}{{literal}}
+<div class="dialog dialog-{{config('controller.name')}}-main">
+    <div class="head" data-title="Audio player | {{$request.file|>file.basename}}">
+        <h1><img src="{{route.get('application-audio-player-icon')}}" class="icon" /> Audio player</h1>
+        <span class="close"><i class="fas fa-window-close"></i></span>
+        <span class="minimize"><i class="far fa-window-minimize"></i></span>
+    </div>
+    <div class="menu">
+        <ul>
+            <li class="file">File</li>
+        </ul>
+        <div class="menu-file-protector display-none">
+        </div>
+        <div class="menu-file display-none">
+            <ul>
+                /*
+                <li>New</li>
+                <li class="menu-file-save">Save</li>
+                <li>Save as</li>
+                <li>Print</li>
+                */
+                <li class="menu-file-open">Open</li>
+                <li class="menu-file-exit">Exit</li>
+            </ul>
+        </div>
+    </div>
+    <div class="menu-application-mandelbrot-explorer">
+        <ul>
+            <li title="{{$request.file|>file.basename}}">{{$request.file|>file.basename}}</li>
+        </ul>
+    </div>
+    <div class="body">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Endless RGB Mandelbrot</title>
+        <style>
+            body { margin: 0; overflow: hidden; background: #000; font-family: sans-serif; }
+            canvas { display: block; cursor: crosshair; }
+            #ui {
+                position: absolute; top: 20px; left: 20px;
+                color: white; background: rgba(0,0,0,0.7);
+                padding: 15px; border-radius: 8px; pointer-events: none;
+                border: 1px solid #444;
+            }
+            kbd { background: #333; padding: 2px 4px; border-radius: 3px; border: 1px solid #777; }
+        </style>
+        <script>
+                const canvas = document.getElementById('fractalCanvas');
+                const ctx = canvas.getContext('2d');
+                const stateDisplay = document.getElementById('state');
+
+                // State object (The "Seed ID" for the current view)
+                let state = {
+                    xCenter: -0.5,
+                    yCenter: 0,
+                    zoom: 1,
+                    maxIter: 100,
+                    intervalId: []
+                };
+
+                function resize() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    draw();
+                }
+
+                // Map iteration count to a full RGB spectrum with opacity
+                function getColor(iter, maxIter) {
+                    if (iter === maxIter) return 'rgba(0, 0, 0, 1)'; // Inner set is black
+
+                    // Create a smooth color transition using HSL
+                    // Hue: 0-360 (Full spectrum)
+                    // Saturation: 100%
+                    // Lightness: 50%
+                    // Alpha: Based on how deep the iteration went
+                    const hue = (iter * 5) % 360;
+                    const alpha = Math.min(1, iter / 20);
+                    return `hsla(${hue}, 100%, 50%, ${alpha})`;
+                }
+
+                function draw() {
+                    const width = canvas.width;
+                    const height = canvas.height;
+                    const imageData = ctx.createImageData(width, height);
+                    const data = imageData.data;
+
+                    const aspectRatio = width / height;
+                    const viewWidth = 4 / state.zoom;
+                    const viewHeight = (4 / aspectRatio) / state.zoom;
+
+                    const xMin = state.xCenter - viewWidth / 2;
+                    const yMin = state.yCenter - viewHeight / 2;
+
+                    // Dynamically increase iterations as we zoom to keep detail
+                    const currentMaxIter = Math.floor(state.maxIter + Math.log10(state.zoom) * 100);
+
+                    for (let px = 0; px < width; px++) {
+                        for (let py = 0; py < height; py++) {
+
+                            // Convert pixel to complex plane
+                            let x0 = xMin + (px / width) * viewWidth;
+                            let y0 = yMin + (py / height) * viewHeight;
+
+                            let x = 0, y = 0, iter = 0;
+
+                            while (x*x + y*y <= 4 && iter < currentMaxIter) {
+                                let xtemp = x*x - y*y + x0;
+                                y = 2*x*y + y0;
+                                x = xtemp;
+                                iter++;
+                            }
+
+                            // Color calculation
+                            const pixelIndex = (py * width + px) * 4;
+                            if (iter === currentMaxIter) {
+                                data[pixelIndex] = 0;     // R
+                                data[pixelIndex + 1] = 0; // G
+                                data[pixelIndex + 2] = 0; // B
+                                data[pixelIndex + 3] = 255; // A
+                            } else {
+                                // Convert HSL to RGB manually for ImageData performance
+                                const saturation = rand(0,10000) / 10000;
+                                const lightness = rand(0,10000) / 10000;
+                                const rgb = hslToRgb((iter * 5) % 360, saturation, lightness);
+                                data[pixelIndex] = rgb[0];
+                                data[pixelIndex + 1] = rgb[1];
+                                data[pixelIndex + 2] = rgb[2];
+                                data[pixelIndex + 3] = Math.min(255, iter * 10); // Opacity based on iter
+                            }
+                        }
+                    }
+                    ctx.putImageData(imageData, 0, 0);
+                    updateUI();
+                }
+
+                function rand (min, max) {
+                    var argc = arguments.length;
+                    if (argc === 0) {
+                        min = 0;
+                        max = 2147483647;
+                    }
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                }
+
+                // Helper to convert HSL to RGB for the ImageData buffer
+                function hslToRgb(h, s, l) {
+                    let r, g, b;
+                    h /= 360;
+                    const q = l < 0.5 ? l * (1 + s) : l + s * (l - 0.5);
+                    const p = 2 * l - q;
+                    const hue2rgb = (t) => {
+                        if (t < 0) t += 1;
+                        if (t > 1) t -= 1;
+                        if (t < 1/6) return p + (q - p) * 6 * t;
+                        if (t < 1/2) return q;
+                        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                        return p;
+                    };
+                    return [
+                        Math.round(hue2rgb(h + 1/3) * 255),
+                        Math.round(hue2rgb(h) * 255),
+                        Math.round(hue2rgb(h - 1/3) * 255)
+                    ];
+                }
+
+                function updateUI() {
+                    stateDisplay.innerText = `Seed ID: [X: ${state.xCenter.toFixed(4)}, Y: ${state.yCenter.toFixed(4)}, Z: ${state.zoom.toExponential(2)}]`;
+                }
+
+                // Interaction
+                canvas.addEventListener('mousedown', (e) => {
+                    const width = canvas.width;
+                    const height = canvas.height;
+                    const aspectRatio = width / height;
+                    const viewWidth = 4 / state.zoom;
+                    const viewHeight = (4 / aspectRatio) / state.zoom;
+
+                    // Calculate clicked coordinates
+                    const clickX = (state.xCenter - viewWidth / 2) + (e.clientX / width) * viewWidth;
+                    const clickY = (state.yCenter - viewHeight / 2) + (e.clientY / height) * viewHeight;
+
+                    if (e.button === 0) { // Left click: Zoom In
+                        state.xCenter = clickX;
+                        state.yCenter = clickY;
+                        state.zoom *= 2;
+                    } else if (e.button === 2) { // Right click: Zoom Out
+                        state.zoom /= 2;
+                    }
+                    let nodeList = state.intervalId;
+                    let index;
+                    for(index=0; index < nodeList.length; index++){
+                        let intervalId = nodeList[index];
+                        clearInterval(intervalId);
+                    }
+                    state.intervalId.push(
+                        setInterval(() => {
+                            resize();
+                        }, 1000 / 2)
+                );
+                    setTimeout(() => {
+                        state.intervalId.push(
+                            setInterval(() => {
+                                resize();
+                            }, 1000 / 2)
+                    );
+                    }, 125);
+                });
+
+                // Prevent context menu on right click
+                canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+                window.addEventListener('keydown', (e) => {
+                    if (e.key.toLowerCase() === 'r') {
+                        state = { xCenter: -0.5, yCenter: 0, zoom: 1, maxIter: 100 };
+                        let nodeList = state.intervalId;
+                        let index;
+                        for(index=0; index < nodeList.length; index++){
+                            let intervalId = nodeList[index];
+                            clearInterval(intervalId);
+                        }
+                        state.intervalId.push(
+                            setInterval(() => {
+                                resize();
+                            }, 1000 / 2)
+                    );
+                        setTimeout(() => {
+                            state.intervalId.push(
+                                setInterval(() => {
+                                    resize();
+                                }, 1000 / 2)
+                        );
+                        }, 125);
+                    }
+                });
+
+                window.addEventListener('resize', resize);
+                let nodeList = state.intervalId;
+                let index;
+                for(index=0; index < nodeList.length; index++){
+                    let intervalId = nodeList[index];
+                    clearInterval(intervalId);
+                }
+                state.intervalId.push(
+                    setInterval(() => {
+                        resize();
+                    }, 1000 / 2)
+                );
+                setTimeout(() => {
+                    state.intervalId.push(
+                        setInterval(() => {
+                            resize();
+                        }, 1000 / 2)
+                );
+                }, 125);
+
+            </script>
+    </head>
+    <body>
+
+    <div id="ui">
+        <h2 style="margin-top:0">Mandelbrot Explorer</h2>
+        <p>Click to Zoom In</p>
+        <p>Right Click to Zoom Out</p>
+        <p><kbd>R</kbd> to Reset</p>
+        <div id="state">Seed: Initializing...</div>
+    </div>
+    <canvas id="fractalCanvas"></canvas>
+        //as the rush comes instrumental first (or wait for a take down request t.d.r.)
+        {{$source.request = $request.file}}
+        {{$source.request = $source.request|>url.encode}}
+        {{$source.src = server.url(\"{{/literal}}{{$backend.host}}{{literal}}\") + 'FileSystem/?url='+ $source.request}}
+        {{$source.type = source.type($request.file)}}
+        <input type="hidden" name="node.url" value="{{$request.file}}" />
+        <input type="hidden" name="node.source" value="{{$source.src}}" />
+        <input type="hidden" name="node.type" value="{{$source.type}}" />
+        /*
+        <audio controls crossorigin="anonymous" autoplay>
+            <source data-src="{{$source.src}}" type="{{$source.type}}">
+
+            Your browser does not support the audio element.
+        </audio>
+        */
+    </div>
+    <div class="footer">
+&copy; 2026 Remco van der Velde
+    </div>
+</div>
+{{/literal}}
