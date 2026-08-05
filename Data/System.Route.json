@@ -5,7 +5,7 @@
         "#class": "System.Route",
         "name": "raxon-org-cli-www-workandtravel-world",
         "path": "raxon\/www-workandtravel-world",
-        "controller": "Package:Raxon:Workspace:Controller:Cli:run",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
         "priority": 1001,
         "request": {
           "language": "en"
