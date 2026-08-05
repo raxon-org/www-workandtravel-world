@@ -8,7 +8,8 @@
         "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
         "priority": 1001,
         "request": {
-          "language": "en"
+          "language": "en",
+          "type": "domain"
         },
         "method": [
           "CLI"
@@ -21,7 +22,8 @@
         "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Www_Workandtravel_World:main",
         "priority": 1002,
         "request": {
-          "language": "en"
+          "language": "en",
+          "type": "domain"
         },
         "method": [
           "GET"
