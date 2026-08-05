@@ -1,6 +1,6 @@
 <?php
 
-namespace Package\Raxon\Audioplayer\Controller;
+namespace Package\Raxon\Www_Workandtravel_World\Controller;
 
 use Raxon\App;
 
@@ -19,8 +19,8 @@ class Cli extends Controller {
     const DIR = __DIR__ . '/';
     const MODULE_INFO = 'Info';
     const INFO = [
-        '{{binary()}} raxon audioplayer',
-        '{{binary()}} raxon audioplayer setup',
+        '{{binary()}} raxon www-workandtravel-world info',
+        '{{binary()}} raxon www-workandtravel-world setup',
     ];
 
     /**
