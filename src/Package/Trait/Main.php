@@ -1,5 +1,5 @@
 <?php
-namespace Package\Raxon\Www_Workandtravel_World\Trait;
+namespace Package\Raxon\Www\Workandtravel\World\Trait;
 
 use Raxon\App;
 use Raxon\Config;
