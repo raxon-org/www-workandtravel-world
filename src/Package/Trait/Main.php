@@ -246,11 +246,9 @@ trait Main {
                 //adding application to the extension and add extensions to the application
                 $repository = $connection->manager->getRepository('\Entity\Application');
                 $application_url = '{{route.get(\''. self::ROUTE_NAME . '\')}}';
-                d($application_url);
                 $entity_application = $repository->findOneBy([
                     'url' => $application_url
                 ]);
-                ddd($application_url);
                 if(!$entity_application){
                     $entity_application = new \Entity\Application();
                     $entity_application->setUrl('{{route.get(\''. self::ROUTE_NAME . '\')}}');
