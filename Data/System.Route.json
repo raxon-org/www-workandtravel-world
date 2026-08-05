@@ -19,7 +19,7 @@
         "#class": "System.Route",
         "name": "www.workandtravel.world/index",
         "path": "\/",
-        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Www_Workandtravel_World:main",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Www:main",
         "priority": 1002,
         "request": {
           "language": "en",
