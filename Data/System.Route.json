@@ -3,8 +3,8 @@
     "Route": [
       {
         "#class": "System.Route",
-        "name": "raxon-org-cli-workspace",
-        "path": "raxon\/workspace",
+        "name": "raxon-org-cli-www-workandtravel-world",
+        "path": "raxon\/www-workandtravel-world",
         "controller": "Package:Raxon:Workspace:Controller:Cli:run",
         "priority": 1001,
         "request": {
