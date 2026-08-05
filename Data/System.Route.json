@@ -5,7 +5,7 @@
         "#class": "System.Route",
         "name": "www.workandtravel.world",
         "path": "raxon/www-workandtravel-world",
-        "controller": "Package:Raxon:Www_Workandtravel_World:Controller:Cli:main",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
         "priority": 1001,
         "request": {
           "language": "en"
@@ -18,7 +18,7 @@
         "#class": "System.Route",
         "name": "www.workandtravel.world/index",
         "path": "\/",
-        "controller": "Package:Raxon:Www_Workandtravel_World:Controller:Www_Workandtravel_World:main",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Www_Workandtravel_World:main",
         "priority": 1002,
         "request": {
           "language": "en"
