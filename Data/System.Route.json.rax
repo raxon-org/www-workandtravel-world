@@ -1,0 +1,40 @@
+{
+  "System": {
+    "Route": [
+      {
+        "name": "*",
+        "host": "www.workandtravel.world",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Index:main",
+        "priority": 2001,
+        "method": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "name": "index",
+        "path": "\/",
+        "host": "www.workandtravel.world",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Index:main",
+        "priority": 2002,
+        "method": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "#class": "System.Route",
+        "name": "www.workandtravel.world.cli",
+        "path": "raxon/www-workandtravel-world",
+        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
+        "priority": 1001,
+        "request": {
+            "language": "en"
+        },
+        "method": [
+            "CLI"
+        ]
+      }
+    ]
+  }
+}
