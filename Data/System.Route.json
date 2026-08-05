@@ -3,8 +3,8 @@
     "Route": [
       {
         "name": "*",
-        "host": "www.workandtravel.world",
-        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Index:main",
+        "host": "{{options('frontend.host')}}",
+        "controller": "Domain:{{app.controller.host(options('frontend.host'))}}:Controller:Index:main",
         "priority": 2001,
         "method": [
           "GET",
@@ -14,8 +14,8 @@
       {
         "name": "index",
         "path": "\/",
-        "host": "www.workandtravel.world",
-        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Index:main",
+        "host": "{{options('frontend.host')}}",
+        "controller": "Domain:{{app.controller.host(options('frontend.host'))}}:Controller:Index:main",
         "priority": 2002,
         "method": [
           "GET",
@@ -29,10 +29,10 @@
         "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
         "priority": 1001,
         "request": {
-            "language": "en"
+          "language": "en"
         },
         "method": [
-            "CLI"
+          "CLI"
         ]
       }
     ]
