@@ -291,8 +291,6 @@ trait Main {
             $response_frontend['node']->name .
             $object->config('ds')
         ;
-        d($dir_read_frontend);
-        ddd($dir_www);
         if(!File::exist($dir_www)){
             Dir::create($dir_www, Dir::CHMOD);
             File::permission($object, [
