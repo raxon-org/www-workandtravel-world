@@ -2,10 +2,10 @@
     "System": {
         "Route": [
             {
-                "name": "www-workandtravel-world",
+                "name": "application-index",
                 "path": "\/",
                 "host": "{{options('frontend.host')}}",
-                "controller": "Domain:{{app.controller.host(options('frontend.host'))}}:Application:Www:Controller:Www:main",
+                "controller": "Domain:{{app.controller.host(options('frontend.host'))}}:Application:Index:Controller:Www:main",
                 "priority": 3001,
                 "method": [
                     "GET",
@@ -13,7 +13,7 @@
                 ]
             },
             {
-                "name": "www-workandtravel-world-icon",
+                "name": "application-icon",
                 "url": "\/Icon\/Icon.png",
                 "host": "{{options('frontend.host')}}",
                 "priority": 3002
