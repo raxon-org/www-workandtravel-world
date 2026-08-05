@@ -3,7 +3,7 @@
         "Route": [
             {
                 "name": "application-index",
-                "path": "\/",
+                "path": "\/Application\/Index\/",
                 "host": "{{options('frontend.host')}}",
                 "controller": "Domain:{{app.controller.host(options('frontend.host'))}}:Application:Index:Controller:Www:main",
                 "priority": 3001,
@@ -14,7 +14,7 @@
             },
             {
                 "name": "application-icon",
-                "url": "\/Icon\/Icon.png",
+                "url": "\/Application\/Index\/Icon\/Icon.png",
                 "host": "{{options('frontend.host')}}",
                 "priority": 3002
             }
