@@ -3,9 +3,9 @@
     "Route": [
       {
         "#class": "System.Route",
-        "name": "www.workandtravel",
+        "name": "www.workandtravel.world",
         "path": "info",
-        "controller": "Package:RaXon83:www.workandtravel.world:Controller:Cli:main",
+        "controller": "Package:Raxon:www-workandtravel-world:Controller:Cli:main",
         "priority": 1001,
         "request": {
           "language": "en"
@@ -18,7 +18,7 @@
         "#class": "System.Route",
         "name": "www.workandtravel",
         "path": "\/",
-        "controller": "Package:RaXon83:www.workandtravel.world:Controller:Www:main",
+        "controller": "Package:Raxon:www-workandtravel-world:Controller:Www:main",
         "priority": 1002,
         "request": {
           "language": "en"
