@@ -3,7 +3,7 @@
     "Route": [
       {
         "#class": "System.Route",
-        "name": "www.workandtravel.world",
+        "name": "www.workandtravel.world.cli",
         "path": "raxon/www-workandtravel-world",
         "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
         "priority": 1001,
@@ -17,7 +17,7 @@
       },
       {
         "#class": "System.Route",
-        "name": "www.workandtravel.world/index",
+        "name": "www.workandtravel.world",
         "path": "\/",
         "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Www:main",
         "priority": 1002,
