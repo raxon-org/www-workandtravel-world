@@ -1,6 +1,6 @@
 <?php
 
-namespace Package\Raxon\Www_Workandtravel_World\Controller;
+namespace Package\Raxon\Www\Workandtravel\World\Controller;
 
 use Raxon\App;
 
