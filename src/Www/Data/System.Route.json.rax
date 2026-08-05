@@ -21,19 +21,6 @@
           "GET",
           "POST"
         ]
-      },
-      {
-        "#class": "System.Route",
-        "name": "www.workandtravel.world.cli",
-        "path": "raxon/www-workandtravel-world",
-        "controller": "Package:Raxon:Www:Workandtravel:World:Controller:Cli:main",
-        "priority": 1001,
-        "request": {
-          "language": "en"
-        },
-        "method": [
-          "CLI"
-        ]
       }
     ]
   }
